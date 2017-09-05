@@ -1,0 +1,8 @@
+val business = sc.textFile("/yelp/business/business.csv")
+val review = sc.textFile("/yelp/review/review.csv").map(x=>x.split("\\^"))
+val starFilter = review.map(x=>(x(2), (x(1).toString+" "+x(3).toString)))
+val standfordFilter = business.filter(x=>x.contains("Stanford")).map(x=>x.split("\\^")).map(x=>(x(0),1))
+val temp = standfordFilter.join(starFilter).collect()
+println("")
+println("user_id        stars")
+val result = temp.foreach(x=>println(x._2._2))
